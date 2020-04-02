@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jc.dao.ITbUserDao">
+    <!-- 自定义结果集 -->
+    <resultMap id="BaseResultMap" type="com.jc.model.TbUser">
+        <id property="id" column="id" javaType="java.lang.Integer"></id>
+        <result property="name" column="name" javaType="java.lang.String"></result>
+        <result property="password" column="password" javaType="java.lang.String"></result>
+        <result property="sex" column="sex" javaType="java.lang.String"></result>
+        <result property="age" column="age" javaType="java.lang.Integer"></result>
+        <result property="phone" column="phone" javaType="java.lang.String"></result>
+        <result property="email" column="email" javaType="java.lang.String"></result>
+        <result property="dateStart" column="date_start" javaType="java.lang.String"></result>
+        <result property="dateEnd" column="date_end" javaType="java.lang.String"></result>
+        <result property="money" column="money" javaType="java.lang.Double"></result>
+        <result property="state" column="state" javaType="java.lang.Integer"></result>
+    </resultMap>
+
+    <!-- 在各种标签中，id属性必须与接口中的方法名一样，id的值必须是唯一的，parameterType指查询时使用的参数类型，
+    resultType属性指明查询返回的结果集类型    -->
+
+    <sql id="Base_Column_List">
+        id,name,password,sex,age,phone,email,date_start,date_end,money,state
+    </sql>
+    <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_user
+        where id = #{id}
+    </select>
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from tb_user
+        where id = #{id}
+    </delete>
+    <insert id="insert" parameterType="com.jc.model.TbUser">
+        insert into tb_user(name,password,sex,age,phone,email,date_start,date_end,money,state)
+        values (#{name},#{password},#{sex},#{age},#{phone},#{email},#{dateStart},#{dateEnd},#{money},#{state})
+    </insert>
+    <update id="updateSelective" parameterType="com.jc.model.TbUser">
+        update tb_user
+        <set>
+            <if test="name != null and name!='' ">
+                name = #{name},
+            </if>
+            <if test="password != null and password!='' ">
+                password = #{password},
+            </if>
+            <if test="sex != null and sex!='' ">
+                sex = #{sex},
+            </if>
+            <if test="age != null and age!='' ">
+                age = #{age},
+            </if>
+            <if test="phone != null and phone!='' ">
+                phone = #{phone},
+            </if>
+            <if test="email != null and email!='' ">
+                email = #{email},
+            </if>
+            <if test="dateStart != null and dateStart!='' ">
+                date_start = #{dateStart},
+            </if>
+            <if test="dateEnd != null and dateEnd!='' ">
+                date_end = #{dateEnd},
+            </if>
+            <if test="money != null and money!='' ">
+                money = #{money},
+            </if>
+            <if test="state != null and state!='' ">
+                state = #{state},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <update id="update" parameterType="com.jc.model.TbUser">
+        update tb_user
+        set name = #{name}, password = #{password}, sex = #{sex}, age = #{age}, phone = #{phone}, email = #{email},
+        date_start = #{dateStart}, date_end = #{dateEnd}, money = #{money}, state = #{state}
+        where id = #{id}
+    </update>
+    <select id="findAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_user
+    </select>
+    <select id="findByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_user
+        where name = #{name}
+    </select>
+    <select id="findByPassword" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_user
+        where password = #{password}
+    </select>
+    <select id="findBySex" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_user
+        where sex = #{sex}
+    </select>
+    <select id="findByAge" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_user
+        where age = #{age}
+    </select>
+    <select id="findByPhone" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_user
+        where phone = #{phone}
+    </select>
+    <select id="findByEmail" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_user
+        where email = #{email}
+    </select>
+    <select id="findByDateStart" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_user
+        where date_start = #{dateStart}
+    </select>
+    <select id="findByDateEnd" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_user
+        where date_end = #{dateEnd}
+    </select>
+    <select id="findByMoney" resultMap="BaseResultMap" parameterType="java.lang.Double">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_user
+        where money = #{money}
+    </select>
+    <select id="findByState" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from tb_user
+        where state = #{state}
+    </select>
+    <delete id="deleteBatch" parameterType="java.util.Arrays">
+        delete from tb_user where id in
+        <foreach collection="array" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    <select id="search" parameterType="com.jc.model.TbUser" resultMap="BaseResultMap">
+        select * from tb_user
+        <where>
+            <if test="name != null and name!='' ">
+                and name = #{name}
+            </if>
+            <if test="password != null and password!='' ">
+                and password = #{password}
+            </if>
+            <if test="sex != null and sex!='' ">
+                and sex = #{sex}
+            </if>
+            <if test="age != null and age!='' ">
+                and age = #{age}
+            </if>
+            <if test="phone != null and phone!='' ">
+                and phone = #{phone}
+            </if>
+            <if test="email != null and email!='' ">
+                and email = #{email}
+            </if>
+            <if test="dateStart != null and dateStart!='' ">
+                and date_start = #{dateStart}
+            </if>
+            <if test="dateEnd != null and dateEnd!='' ">
+                and date_end = #{dateEnd}
+            </if>
+            <if test="money != null and money!='' ">
+                and money = #{money}
+            </if>
+            <if test="state != null and state!='' ">
+                and state = #{state}
+            </if>
+        </where>
+    </select>
+</mapper> 

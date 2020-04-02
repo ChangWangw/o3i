@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jc.dao.ISchoolsDao">
+    <!-- 自定义结果集 -->
+    <resultMap id="BaseResultMap" type="com.jc.model.Schools">
+        <id property="id" column="id" javaType="java.lang.Integer"/>
+        <result property="packageId" column="package_id" javaType="java.lang.Integer"/>
+        <result property="property" column="property" javaType="java.lang.String"/>
+        <result property="name" column="name" javaType="java.lang.String"/>
+        <result property="site" column="site" javaType="java.lang.String"/>
+        <result property="zone" column="zone" javaType="java.lang.String"/>
+        <result property="packageName" column="package_name" javaType="java.lang.String"/>
+        <result property="nvrType" column="NVR_type" javaType="java.lang.String"/>
+        <result property="nvrIp" column="NVR_ip" javaType="java.lang.String"/>
+        <result property="nvrPort" column="NVR_port" javaType="java.lang.Integer"/>
+        <result property="nvrUesrname" column="NVR_uesrname" javaType="java.lang.String"/>
+        <result property="nvrPassword" column="NVR_password" javaType="java.lang.String"/>
+        <result property="nvrAisle" column="NVR_aisle" javaType="java.lang.String"/>
+        <result property="tvIp" column="TV_ip" javaType="java.lang.String"/>
+        <result property="tvSpareIp" column="TV_spare_ip" javaType="java.lang.String"/>
+        <result property="netmask" column="netmask" javaType="java.lang.String"/>
+        <result property="gateway" column="gateway" javaType="java.lang.String"/>
+        <result property="principal" column="principal" javaType="java.lang.String"/>
+        <result property="principalPhone" column="principal_phone" javaType="java.lang.String"/>
+        <result property="general" column="General" javaType="java.lang.String"/>
+        <result property="generalPhone" column="General_phone" javaType="java.lang.String"/>
+        <result property="tvInstallState" column="TV_install_state" javaType="java.lang.String"/>
+        <result property="tvInstallNull" column="TV_install_null" javaType="java.lang.String"/>
+        <result property="tvDebug" column="TV_debug" javaType="java.lang.String"/>
+        <result property="tvDebugRemarks" column="TV_debug_remarks" javaType="java.lang.String"/>
+        <result property="tvInstallRemarks" column="TV_install_remarks" javaType="java.lang.String"/>
+        <result property="debugOpsInstall" column="debug_ops_install" javaType="java.lang.String"/>
+        <result property="tvDescribe" column="TV_describe" javaType="java.lang.String"/>
+        <result property="tvDebugDate" column="TV_debug_date" javaType="java.lang.String"/>
+    </resultMap>
+
+    <!-- 在各种标签中，id属性必须与接口中的方法名一样，id的值必须是唯一的，parameterType指查询时使用的参数类型，
+    resultType属性指明查询返回的结果集类型    -->
+
+    <sql id="Base_Column_List">
+        id,package_id,property,name,site,zone,package_name,NVR_type,NVR_ip,NVR_port,NVR_uesrname,NVR_password,NVR_aisle,TV_ip,TV_spare_ip,netmask,gateway,principal,principal_phone,General,General_phone,TV_install_state,TV_install_null,TV_debug,TV_debug_remarks,TV_install_remarks,debug_ops_install,TV_describe,TV_debug_date
+    </sql>
+    <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from schools
+        where id = #{id}
+    </select>
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from schools
+        where id = #{id}
+    </delete>
+    <insert id="insert" parameterType="com.jc.model.Schools">
+        insert into
+        schools(package_id,property,name,site,zone,package_name,NVR_type,NVR_ip,NVR_port,NVR_uesrname,NVR_password,NVR_aisle,TV_ip,TV_spare_ip,netmask,gateway,principal,principal_phone,General,General_phone,TV_install_state,TV_install_null,TV_debug,TV_debug_remarks,TV_install_remarks,debug_ops_install,TV_describe,TV_debug_date)
+        values
+        (#{packageId},#{property},#{name},#{site},#{zone},#{packageName},#{nvrType},#{nvrIp},#{nvrPort},#{nvrUesrname},#{nvrPassword},#{nvrAisle},#{tvIp},#{tvSpareIp},#{netmask},#{gateway},#{principal},#{principalPhone},#{general},#{generalPhone},#{tvInstallState},#{tvInstallNull},#{tvDebug},#{tvDebugRemarks},#{tvInstallRemarks},#{debugOpsInstall},#{tvDescribe},#{tvDebugDate})
+    </insert>
+    <insert id="insertall" parameterType="list">
+        insert into
+        schools(package_id,property,name,site,zone,package_name,NVR_type,NVR_ip,NVR_port,NVR_uesrname,NVR_password,NVR_aisle,TV_ip,TV_spare_ip,netmask,gateway,principal,principal_phone,General,General_phone,TV_install_state,TV_install_null,TV_debug,TV_debug_remarks,TV_install_remarks,debug_ops_install,TV_describe,TV_debug_date)
+        values
+        <foreach collection="list" item="li" index="index" separator=",">
+            (#{li.packageId},#{li.property},#{li.name},#{li.site},#{li.zone},#{li.packageName},#{li.nvrType},#{li.nvrIp},#{li.nvrPort},#{li.nvrUesrname},#{li.nvrPassword},#{li.nvrAisle},#{li.tvIp},#{li.tvSpareIp},#{li.netmask},#{li.gateway},#{li.principal},#{li.principalPhone},#{li.general},#{li.generalPhone},#{li.tvInstallState},#{li.tvInstallNull},#{li.tvDebug},#{li.tvDebugRemarks},#{li.tvInstallRemarks},#{li.debugOpsInstall},#{li.tvDescribe},#{li.tvDebugDate})
+        </foreach>
+    </insert>
+    <update id="updateSelective" parameterType="com.jc.model.Schools">
+        update schools
+        <set>
+            <if test="packageId != null and packageId!='' ">
+                package_id = #{packageId},
+            </if>
+            <if test="property != null and property!='' ">
+                property = #{property},
+            </if>
+            <if test="name != null and name!='' ">
+                name = #{name},
+            </if>
+            <if test="site != null and site!='' ">
+                site = #{site},
+            </if>
+            <if test="zone != null and zone!='' ">
+                zone = #{zone},
+            </if>
+            <if test="packageName != null and packageName!='' ">
+                package_name = #{packageName},
+            </if>
+            <if test="nvrType != null and nvrType!='' ">
+                NVR_type = #{nvrType},
+            </if>
+            <if test="nvrIp != null and nvrIp!='' ">
+                NVR_ip = #{nvrIp},
+            </if>
+            <if test="nvrPort != null and nvrPort!='' ">
+                NVR_port = #{nvrPort},
+            </if>
+            <if test="nvrUesrname != null and nvrUesrname!='' ">
+                NVR_uesrname = #{nvrUesrname},
+            </if>
+            <if test="nvrPassword != null and nvrPassword!='' ">
+                NVR_password = #{nvrPassword},
+            </if>
+            <if test="nvrAisle != null and nvrAisle!='' ">
+                NVR_aisle = #{nvrAisle},
+            </if>
+            <if test="tvIp != null and tvIp!='' ">
+                TV_ip = #{tvIp},
+            </if>
+            <if test="tvSpareIp != null and tvSpareIp!='' ">
+                TV_spare_ip = #{tvSpareIp},
+            </if>
+            <if test="netmask != null and netmask!='' ">
+                netmask = #{netmask},
+            </if>
+            <if test="gateway != null and gateway!='' ">
+                gateway = #{gateway},
+            </if>
+            <if test="principal != null and principal!='' ">
+                principal = #{principal},
+            </if>
+            <if test="principalPhone != null and principalPhone!='' ">
+                principal_phone = #{principalPhone},
+            </if>
+            <if test="general != null and general!='' ">
+                General = #{general},
+            </if>
+            <if test="generalPhone != null and generalPhone!='' ">
+                General_phone = #{generalPhone},
+            </if>
+            <if test="tvInstallState != null and tvInstallState!='' ">
+                TV_install_state = #{tvInstallState},
+            </if>
+            <if test="tvInstallNull != null and tvInstallNull!='' ">
+                TV_install_null = #{tvInstallNull},
+            </if>
+            <if test="tvDebug != null and tvDebug!='' ">
+                TV_debug = #{tvDebug},
+            </if>
+            <if test="tvDebugRemarks != null and tvDebugRemarks!='' ">
+                TV_debug_remarks = #{tvDebugRemarks},
+            </if>
+            <if test="tvInstallRemarks != null and tvInstallRemarks!='' ">
+                TV_install_remarks = #{tvInstallRemarks},
+            </if>
+            <if test="debugOpsInstall != null and debugOpsInstall!='' ">
+                debug_ops_install = #{debugOpsInstall},
+            </if>
+            <if test="tvDescribe != null and tvDescribe!='' ">
+                TV_describe = #{tvDescribe},
+            </if>
+            <if test="tvDebugDate != null and tvDebugDate!='' ">
+                TV_debug_date = #{tvDebugDate},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <update id="update" parameterType="com.jc.model.Schools">
+        update schools
+        set package_id = #{packageId}, property = #{property}, name = #{name}, site = #{site}, zone = #{zone},
+        package_name = #{packageName}, NVR_type = #{nvrType}, NVR_ip = #{nvrIp}, NVR_port = #{nvrPort}, NVR_uesrname =
+        #{nvrUesrname}, NVR_password = #{nvrPassword}, NVR_aisle = #{nvrAisle}, TV_ip = #{tvIp}, TV_spare_ip =
+        #{tvSpareIp}, netmask = #{netmask}, gateway = #{gateway}, principal = #{principal}, principal_phone =
+        #{principalPhone}, General = #{general}, General_phone = #{generalPhone}, TV_install_state = #{tvInstallState},
+        TV_install_null = #{tvInstallNull}, TV_debug = #{tvDebug}, TV_debug_remarks = #{tvDebugRemarks},
+        TV_install_remarks = #{tvInstallRemarks}, debug_ops_install = #{debugOpsInstall}, TV_describe = #{tvDescribe},
+        TV_debug_date = #{tvDebugDate}
+        where id = #{id}
+    </update>
+    <select id="findAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from schools
+    </select>
+    <select id="findByPackageId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from schools
+        where package_id = #{packageId}
+    </select>
+    <select id="findByProperty" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from schools
+        where property = #{property}
+    </select>
+    <select id="findByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from schools
+        where name = #{name}
+    </select>
+    <select id="findBySite" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from schools
+        where site = #{site}
+    </select>
+    <select id="findByZone" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from schools
+        where zone = #{zone}
+    </select>
+    <select id="findByPackageName" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from schools
+        where package_name = #{packageName}
+    </select>
+    <select id="findByNvrType" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from schools
+        where NVR_type = #{nvrType}
+    </select>
+    <select id="findByNvrIp" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from schools
+        where NVR_ip = #{nvrIp}
+    </select>
+    <select id="findByNvrPort" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from schools
+        where NVR_port = #{nvrPort}
+    </select>
+    <select id="findByNvrUesrname" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from schools
+        where NVR_uesrname = #{nvrUesrname}
+    </select>
+    <select id="findByNvrPassword" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from schools
+        where NVR_password = #{nvrPassword}
+    </select>
+    <select id="findByNvrAisle" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from schools
+        where NVR_aisle = #{nvrAisle}
+    </select>
+    <select id="findByTvIp" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from schools
+        where TV_ip = #{tvIp}
+    </select>
+    <select id="findByTvSpareIp" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from schools
+        where TV_spare_ip = #{tvSpareIp}
+    </select>
+    <select id="findByNetmask" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from schools
+        where netmask = #{netmask}
+    </select>
+    <select id="findByGateway" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from schools
+        where gateway = #{gateway}
+    </select>
+    <select id="findByPrincipal" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from schools
+        where principal = #{principal}
+    </select>
+    <select id="findByPrincipalPhone" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from schools
+        where principal_phone = #{principalPhone}
+    </select>
+    <select id="findByGeneral" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from schools
+        where General = #{general}
+    </select>
+    <select id="findByGeneralPhone" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from schools
+        where General_phone = #{generalPhone}
+    </select>
+    <select id="findByTvInstallState" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from schools
+        where TV_install_state = #{tvInstallState}
+    </select>
+    <select id="findByTvInstallNull" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from schools
+        where TV_install_null = #{tvInstallNull}
+    </select>
+    <select id="findByTvDebug" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from schools
+        where TV_debug = #{tvDebug}
+    </select>
+    <select id="findByTvDebugRemarks" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from schools
+        where TV_debug_remarks = #{tvDebugRemarks}
+    </select>
+    <select id="findByTvInstallRemarks" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from schools
+        where TV_install_remarks = #{tvInstallRemarks}
+    </select>
+    <select id="findByDebugOpsInstall" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from schools
+        where debug_ops_install = #{debugOpsInstall}
+    </select>
+    <select id="findByTvDescribe" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from schools
+        where TV_describe = #{tvDescribe}
+    </select>
+    <select id="findByTvDebugDate" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from schools
+        where TV_debug_date = #{tvDebugDate}
+    </select>
+    <delete id="deleteBatch" parameterType="java.util.Arrays">
+        delete from schools where id in
+        <foreach collection="array" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+    <select id="search" parameterType="com.jc.model.Schools" resultMap="BaseResultMap">
+        select * from schools
+        <where>
+            <if test="packageId != null and packageId!='' ">
+                and package_id = #{packageId}
+            </if>
+            <if test="property != null and property!='' ">
+                and property = #{property}
+            </if>
+            <if test="name != null and name!='' ">
+                and name = #{name}
+            </if>
+            <if test="site != null and site!='' ">
+                and site = #{site}
+            </if>
+            <if test="zone != null and zone!='' ">
+                and zone = #{zone}
+            </if>
+            <if test="packageName != null and packageName!='' ">
+                and package_name = #{packageName}
+            </if>
+            <if test="nvrType != null and nvrType!='' ">
+                and NVR_type = #{nvrType}
+            </if>
+            <if test="nvrIp != null and nvrIp!='' ">
+                and NVR_ip = #{nvrIp}
+            </if>
+            <if test="nvrPort != null and nvrPort!='' ">
+                and NVR_port = #{nvrPort}
+            </if>
+            <if test="nvrUesrname != null and nvrUesrname!='' ">
+                and NVR_uesrname = #{nvrUesrname}
+            </if>
+            <if test="nvrPassword != null and nvrPassword!='' ">
+                and NVR_password = #{nvrPassword}
+            </if>
+            <if test="nvrAisle != null and nvrAisle!='' ">
+                and NVR_aisle = #{nvrAisle}
+            </if>
+            <if test="tvIp != null and tvIp!='' ">
+                and TV_ip = #{tvIp}
+            </if>
+            <if test="tvSpareIp != null and tvSpareIp!='' ">
+                and TV_spare_ip = #{tvSpareIp}
+            </if>
+            <if test="netmask != null and netmask!='' ">
+                and netmask = #{netmask}
+            </if>
+            <if test="gateway != null and gateway!='' ">
+                and gateway = #{gateway}
+            </if>
+            <if test="principal != null and principal!='' ">
+                and principal = #{principal}
+            </if>
+            <if test="principalPhone != null and principalPhone!='' ">
+                and principal_phone = #{principalPhone}
+            </if>
+            <if test="general != null and general!='' ">
+                and General = #{general}
+            </if>
+            <if test="generalPhone != null and generalPhone!='' ">
+                and General_phone = #{generalPhone}
+            </if>
+            <if test="tvInstallState != null and tvInstallState!='' ">
+                and TV_install_state = #{tvInstallState}
+            </if>
+            <if test="tvInstallNull != null and tvInstallNull!='' ">
+                and TV_install_null = #{tvInstallNull}
+            </if>
+            <if test="tvDebug != null and tvDebug!='' ">
+                and TV_debug = #{tvDebug}
+            </if>
+            <if test="tvDebugRemarks != null and tvDebugRemarks!='' ">
+                and TV_debug_remarks = #{tvDebugRemarks}
+            </if>
+            <if test="tvInstallRemarks != null and tvInstallRemarks!='' ">
+                and TV_install_remarks = #{tvInstallRemarks}
+            </if>
+            <if test="debugOpsInstall != null and debugOpsInstall!='' ">
+                and debug_ops_install = #{debugOpsInstall}
+            </if>
+            <if test="tvDescribe != null and tvDescribe!='' ">
+                and TV_describe = #{tvDescribe}
+            </if>
+            <if test="tvDebugDate != null and tvDebugDate!='' ">
+                and TV_debug_date = #{tvDebugDate}
+            </if>
+        </where>
+    </select>
+</mapper> 
